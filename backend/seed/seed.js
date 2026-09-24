@@ -95,6 +95,7 @@ async function seed() {
   };
 
   const demoEmail = 'demo@example.com';
+  const seededParticipantEmail = 'seeded-participant@example.com';
 
   // --- Idempotent cleanup ------------------------------------------
   // Find each existing demo document FIRST (by the assignment's own
@@ -111,36 +112,58 @@ async function seed() {
     await Competition.deleteOne({ _id: existingCompetition._id });
   }
 
-  const existingUser = await User.findOne({ email: demoEmail });
-  if (existingUser) {
-    await Registration.deleteMany({ userId: existingUser._id });
-    await User.deleteOne({ _id: existingUser._id });
+  const existingUsers = await User.find({
+    email: { $in: [demoEmail, seededParticipantEmail] },
+  });
+  if (existingUsers.length > 0) {
+    const existingUserIds = existingUsers.map((user) => user._id);
+    await Registration.deleteMany({ userId: { $in: existingUserIds } });
+    await User.deleteMany({ _id: { $in: existingUserIds } });
   }
 
   // --- Create fresh demo data ---------------------------------------
   const competition = await Competition.create(competitionData);
 
-  const user = await User.create({
-    name: 'Demo User',
-    email: demoEmail,
-  });
+  const [seededParticipant, demoUser] = await User.create([
+    {
+      name: 'Seeded Participant',
+      email: seededParticipantEmail,
+    },
+    {
+      name: 'Demo User',
+      email: demoEmail,
+    },
+  ]);
 
-  // Exactly one registration, matching competition.bookedSpots = 1, so
-  // the seeded data is internally consistent. No pre-delete needed
-  // here — competition and user are freshly created above, so no
-  // registration can already reference their (brand new) _ids.
+  // Exactly one registration belongs to the seeded participant. Demo User
+  // deliberately starts unregistered so the mobile app can demonstrate the
+  // normal registration flow.
   const registration = await Registration.create({
     competitionId: competition._id,
-    userId: user._id,
+    userId: seededParticipant._id,
     status: 'REGISTERED',
   });
 
+  const [competitionRegistrations, demoUserRegistrationCount] = await Promise.all([
+    Registration.find({ competitionId: competition._id }),
+    Registration.countDocuments({ userId: demoUser._id }),
+  ]);
+
+  if (
+    competition.bookedSpots !== 1 ||
+    competitionRegistrations.length !== 1 ||
+    !competitionRegistrations[0].userId.equals(seededParticipant._id) ||
+    demoUserRegistrationCount !== 0
+  ) {
+    throw new Error('Seed invariant failed: Demo User must start unregistered with 1/20 booked.');
+  }
+
   console.log('--- Seed complete ---');
-  console.log(`Competition: "${competition.name}" (slug: ${competition.slug}, _id: ${competition._id})`);
-  console.log(`  maxParticipants=${competition.maxParticipants}, bookedSpots=${competition.bookedSpots}`);
-  console.log(`  previousWinners: ${competition.previousWinners.length}, rewards: ${competition.rewards.length}`);
-  console.log(`User: "${user.name}" <${user.email}> (_id: ${user._id})`);
-  console.log(`Registration: _id=${registration._id}, status=${registration.status}`);
+  console.log(`Competition ID: ${competition._id}`);
+  console.log(`Demo User ID: ${demoUser._id}`);
+  console.log(`Seeded Participant ID: ${seededParticipant._id}`);
+  console.log(`Registration ID: ${registration._id}`);
+  console.log('State: 1 / 20 booked; Demo User is not registered.');
   console.log('---------------------');
 
   await mongoose.disconnect();
