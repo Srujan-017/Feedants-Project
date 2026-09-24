@@ -8,7 +8,7 @@
 - Terminal A: backend running (`npm run dev` inside `backend/`)
 - Terminal B: Expo running (`npx expo start` inside `mobile/`)
 - Emulator or physical device connected and showing the app
-- `mobile/src/constants/config.js` has the correct `DEMO_COMPETITION_ID`, `DEMO_USER_ID`, and `API_BASE_URL`
+- `API_BASE_URL` is correct for the selected device/emulator. The app resolves seeded IDs automatically.
 
 ---
 

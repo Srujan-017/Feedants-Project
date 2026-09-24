@@ -4,6 +4,9 @@ const registrationRoutes = require('./registrationRoutes');
 
 const router = express.Router();
 
+// Keep named routes before /:id so Express does not treat "demo-context" as
+// a MongoDB ObjectId.
+router.get('/demo-context', competitionController.getDemoContext);
 router.get('/:id', competitionController.getCompetition);
 router.get('/:id/winners', competitionController.getWinners);
 

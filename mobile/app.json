@@ -5,10 +5,10 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "dark",
+    "userInterfaceStyle": "light",
     "splash": {
       "resizeMode": "contain",
-      "backgroundColor": "#0d0d0f"
+      "backgroundColor": "#f7fbfb"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
@@ -16,7 +16,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#0d0d0f"
+        "backgroundColor": "#f7fbfb"
       }
     }
   }

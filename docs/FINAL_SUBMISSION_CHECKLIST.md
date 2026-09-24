@@ -30,10 +30,8 @@ Complete every item before submitting. Mark each `[x]` when confirmed.
 ## MOBILE STARTUP
 
 - [ ] `cd mobile && npm install` — completes without errors
-- [ ] `mobile/src/constants/config.js` updated with:
-  - [ ] `DEMO_COMPETITION_ID` — ObjectId from seed output
-  - [ ] `DEMO_USER_ID` — ObjectId from seed output
-  - [ ] `API_BASE_URL` — correct for your device/emulator
+- [ ] `API_BASE_URL` configured for your device/emulator through `EXPO_PUBLIC_API_BASE_URL` when needed
+- [ ] Seed data loaded — mobile resolves the current competition and Demo User IDs automatically
 - [ ] `npx expo start` — Metro bundler starts
 - [ ] App loads on emulator or physical device
 

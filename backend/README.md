@@ -28,7 +28,7 @@ backend/
 cd backend
 npm install
 cp .env.example .env     # fill in MONGO_URI
-npm run seed             # prints COMPETITION_ID and USER_ID — save these
+npm run seed             # creates the competition, Demo User, and Seeded Participant
 npm run dev              # http://localhost:5000
 ```
 
@@ -61,6 +61,7 @@ npm run dev              # http://localhost:5000
 | GET | `/api/health` | Server health |
 | GET | `/api/health/db` | MongoDB connection health |
 | GET | `/api/competitions/:id` | Competition details + computed `remainingSpots` |
+| GET | `/api/competitions/demo-context` | Current seeded competition and Demo User IDs |
 | GET | `/api/competitions/:id/winners` | Previous winners array |
 | GET | `/api/competitions/:id/registration-status/:userId` | Registration status for user |
 | POST | `/api/competitions/:id/register` | Register user — body: `{ userId }` |

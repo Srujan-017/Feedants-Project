@@ -288,15 +288,14 @@ npx expo start
 
 **API configuration (`mobile/src/constants/config.js`):**
 ```js
-export const API_BASE_URL = 'http://localhost:5000/api';
+export const API_BASE_URL =
+  process.env.EXPO_PUBLIC_API_BASE_URL || 'http://localhost:5000/api';
 // Android Emulator: http://10.0.2.2:5000/api
 // Physical device: use your computer's LAN IP, e.g. http://192.168.1.X:5000/api
-
-export const DEMO_COMPETITION_ID = 'REPLACE_WITH_COMPETITION_OBJECT_ID';  // from seed output
-export const DEMO_USER_ID        = 'REPLACE_WITH_USER_OBJECT_ID';         // from seed output
 ```
 
 > `localhost` on a physical device refers to the phone itself. Replace with your computer's LAN IP (e.g. `192.168.1.42`) when testing on a real device.
+> The app loads the current seeded competition and Demo User IDs from the API at startup, so no ObjectIds need to be copied into the mobile source after seeding.
 
 ---
 
@@ -307,8 +306,8 @@ The `backend/test/` directory contains a Phase 6 test suite covering edge cases,
 ```bash
 cd backend
 
-# Edge cases — requires running backend + seeded IDs
-COMPETITION_ID=<id> USER_ID=<id> npm run test:edge
+# Edge cases — requires running backend and seeded data
+npm run test:edge
 
 # Concurrency last-seat race
 npm run test:concurrency

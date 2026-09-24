@@ -1,4 +1,5 @@
 const Competition = require('../models/Competition');
+const User = require('../models/User');
 const ApiError = require('../utils/ApiError');
 const isValidObjectId = require('../utils/isValidObjectId');
 
@@ -83,9 +84,30 @@ async function getWinnersByCompetitionId(id) {
   }));
 }
 
+/**
+ * Resolves the seeded IDs at runtime. The seed script recreates documents on
+ * every run, so storing its ObjectIds in the mobile bundle would become stale.
+ */
+async function getDemoContext() {
+  const [competition, demoUser] = await Promise.all([
+    Competition.findOne({ slug: 'feedants-classical-dance' }),
+    User.findOne({ email: 'demo@example.com' }),
+  ]);
+
+  if (!competition || !demoUser) {
+    throw new ApiError(404, 'Demo data is unavailable. Run npm run seed first.');
+  }
+
+  return {
+    competitionId: String(competition._id),
+    demoUserId: String(demoUser._id),
+  };
+}
+
 module.exports = {
   findCompetitionOrThrow,
   toPublicCompetition,
   getCompetitionById,
   getWinnersByCompetitionId,
+  getDemoContext,
 };

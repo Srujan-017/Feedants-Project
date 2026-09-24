@@ -17,4 +17,13 @@ const getWinners = asyncHandler(async (req, res) => {
   res.status(200).json({ success: true, data });
 });
 
-module.exports = { getCompetition, getWinners };
+/**
+ * GET /api/competitions/demo-context
+ * Returns the current seeded competition and unregistered Demo User IDs.
+ */
+const getDemoContext = asyncHandler(async (req, res) => {
+  const data = await competitionService.getDemoContext();
+  res.status(200).json({ success: true, data });
+});
+
+module.exports = { getCompetition, getWinners, getDemoContext };

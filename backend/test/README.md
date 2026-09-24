@@ -5,7 +5,7 @@
 1. **MongoDB** — running and accessible via `MONGO_URI` (e.g. MongoDB Atlas M0 free tier)
 2. **`backend/.env`** — must contain `MONGO_URI`
 3. **Express server running** — `npm run dev` in `backend/` (required for HTTP-based tests)
-4. **Seed data** — run `npm run seed` first; note the printed `COMPETITION_ID` and `USER_ID`
+4. **Seed data** — run `npm run seed` first
 
 > If any prerequisite is unavailable, mark results **NOT VERIFIED** rather than fabricating results.
 
@@ -14,8 +14,6 @@
 | Variable | Required by | Description |
 |---|---|---|
 | `MONGO_URI` | All tests | MongoDB Atlas connection string |
-| `COMPETITION_ID` | `test:edge` | ObjectId of seeded demo competition |
-| `USER_ID` | `test:edge` | ObjectId of seeded demo user |
 | `API_BASE_URL` | All tests | Defaults to `http://localhost:5000/api` |
 
 ## Running Tests
@@ -24,13 +22,13 @@ All commands run from the `backend/` directory.
 
 ### Edge Case Tests
 
-Tests health endpoints, invalid/unknown IDs, and an isolated duplicate-registration scenario. Read-only tests use the seeded `COMPETITION_ID`/`USER_ID`. The duplicate-registration test creates its own isolated `PHASE6_EDGE_DUP_` competition and user and cleans up in `finally`.
+Tests health endpoints, invalid/unknown IDs, and an isolated duplicate-registration scenario. Read-only tests resolve the latest seed documents from `/api/competitions/demo-context`. The duplicate-registration test creates its own isolated `PHASE6_EDGE_DUP_` competition and user and cleans up in `finally`.
 
 ```bash
 cd backend
-COMPETITION_ID=<seeded_id> USER_ID=<seeded_user_id> npm run test:edge
+npm run test:edge
 # With explicit MONGO_URI (required for the isolated duplicate test):
-MONGO_URI="<your MongoDB Atlas connection string>" COMPETITION_ID=<id> USER_ID=<id> npm run test:edge
+MONGO_URI="<your MongoDB Atlas connection string>" npm run test:edge
 ```
 
 **Covers:**
@@ -97,4 +95,4 @@ npm run test:full
 - All test scripts create documents with a phase-specific prefix (`PHASE6_TEST_`, `PHASE6_LIFECYCLE_`, `PHASE6_FULL_`, `PHASE6_EDGE_DUP_`)
 - Every script cleans up its own documents in a `finally` block — cleanup runs regardless of pass/fail
 - Seeded production data is **never modified** by test scripts
-- The seeded `COMPETITION_ID`/`USER_ID` are used only for **read-only** HTTP tests in `edge-cases.js`
+- The seeded competition and Demo User are used only for **read-only** HTTP tests in `edge-cases.js`

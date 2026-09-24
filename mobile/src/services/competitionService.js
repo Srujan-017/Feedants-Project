@@ -69,6 +69,10 @@ export async function getCompetition(competitionId) {
   return toCompetition(data);
 }
 
+export function getDemoContext() {
+  return api.get('/competitions/demo-context');
+}
+
 export async function getCompetitionWinners(competitionId) {
   const data = await api.get(`/competitions/${competitionId}/winners`);
   return (data || []).map((w) => ({

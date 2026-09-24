@@ -128,9 +128,6 @@ const CompetitionSchema = new Schema(
   { timestamps: true }
 );
 
-// Frequent lookup key (e.g. GET /api/competitions/:slug in a later phase).
-CompetitionSchema.index({ slug: 1 }, { unique: true });
-
 // Useful for filtering/listing competitions by lifecycle state.
 CompetitionSchema.index({ status: 1 });
 

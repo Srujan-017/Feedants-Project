@@ -35,7 +35,9 @@ function request(method, path, body = null) {
       });
     });
 
-    req.on('error', reject);
+    req.on('error', (err) => {
+      reject(new Error(`${method} ${url.pathname} failed: ${err.code || err.message}`));
+    });
     if (postData) req.write(postData);
     req.end();
   });

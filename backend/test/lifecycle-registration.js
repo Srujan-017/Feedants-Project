@@ -75,7 +75,7 @@ async function createTestCompetition(status) {
     entryFee: 10,
     maxParticipants: 20,
     bookedSpots: 0,
-    registrationDeadline: status === 'UPCOMING' ? future(5) : past(1), // past for non-open
+    registrationDeadline: status === 'REGISTRATION_OPEN' ? future(5) : past(1),
     submissionStart: future(1),
     submissionEnd: future(5),
     resultDate: future(7),

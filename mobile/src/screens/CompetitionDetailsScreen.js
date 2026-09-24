@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { View, Text, ScrollView, StyleSheet, SafeAreaView, Alert } from 'react-native';
-import { DEMO_COMPETITION_ID, DEMO_USER_ID } from '../constants/config';
 import {
+  getDemoContext,
   getCompetition,
   getCompetitionWinners,
   getRegistrationStatus,
@@ -37,6 +37,7 @@ export default function CompetitionDetailsScreen() {
 
   // Data from backend
   const [competition, setCompetition] = useState(null);
+  const [demoContext, setDemoContext] = useState(null);
   const [winners, setWinners] = useState([]);
   const [registered, setRegistered] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -46,11 +47,13 @@ export default function CompetitionDetailsScreen() {
     setLoading(true);
     setError(null);
     try {
+      const context = await getDemoContext();
       const [comp, regStatus, fetchedWinners] = await Promise.all([
-        getCompetition(DEMO_COMPETITION_ID),
-        getRegistrationStatus(DEMO_COMPETITION_ID, DEMO_USER_ID),
-        getCompetitionWinners(DEMO_COMPETITION_ID),
+        getCompetition(context.competitionId),
+        getRegistrationStatus(context.competitionId, context.demoUserId),
+        getCompetitionWinners(context.competitionId),
       ]);
+      setDemoContext(context);
       setCompetition(comp);
       setRegistered(regStatus?.registered ?? false);
       setWinners(fetchedWinners || []);
@@ -66,15 +69,15 @@ export default function CompetitionDetailsScreen() {
   }, [loadAll]);
 
   async function handleRegister() {
-    if (!competition || registered || registering) return;
+    if (!competition || !demoContext || registered || registering) return;
     setRegistering(true);
     try {
-      await registerForCompetition(DEMO_COMPETITION_ID, DEMO_USER_ID);
+      await registerForCompetition(demoContext.competitionId, demoContext.demoUserId);
       // Re-fetch competition so bookedSpots/remainingSpots are authoritative.
       const [updatedComp, regStatus, updatedWinners] = await Promise.all([
-        getCompetition(DEMO_COMPETITION_ID),
-        getRegistrationStatus(DEMO_COMPETITION_ID, DEMO_USER_ID),
-        getCompetitionWinners(DEMO_COMPETITION_ID),
+        getCompetition(demoContext.competitionId),
+        getRegistrationStatus(demoContext.competitionId, demoContext.demoUserId),
+        getCompetitionWinners(demoContext.competitionId),
       ]);
       setCompetition(updatedComp);
       setRegistered(regStatus?.registered ?? true);
