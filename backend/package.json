@@ -1,12 +1,16 @@
 {
   "name": "feedants-backend",
   "version": "1.0.0",
-  "description": "Feedants Full Stack Development Internship Technical Assignment - Backend (Phase 1: foundation & DB setup)",
+  "description": "Feedants Full Stack Development Internship Technical Assignment - Backend",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "seed": "node seed/seed.js"
+    "seed": "node seed/seed.js",
+    "test:edge": "node test/edge-cases.js",
+    "test:concurrency": "node test/concurrency-registration.js",
+    "test:lifecycle": "node test/lifecycle-registration.js",
+    "test:full": "node test/full-competition.js"
   },
   "keywords": [
     "feedants",

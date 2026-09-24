@@ -1,25 +1,35 @@
-# Dependencies
 node_modules/
-
-# Environment secrets
-.env
-.env.*
+dist/
+build/
+.cache/
+.env*
 !.env.example
-
-# Expo / React Native (created in a later phase)
-.expo/
-.expo-shared/
-
-# Logs
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+.vite/
+vite.config.*.timestamp-*
+*.tsbuildinfo
+*-debug.log*
+logs/
 *.log
+.claude-replay.*
+.tmp-*
+/.figma/design-context/
+/.figma/
 
-# OS files
-.DS_Store
-Thumbs.db
+# Platform-managed agentplat state, not project source. In the
+# client-initiated single-repo workspace layout (make's `Path: "."` spec) the
+# repo root IS the workspace root, so these land inside this repo rather than
+# beside it.
+/.plugins/
+/.opencode-skills/
 
-# Editor
-.vscode/
-.idea/
+# ── Files not part of assignment submission (kept locally for dev environment) ──
+/.mise.toml
+/AGENTS.md
+/CLAUDE.md
+/index.html
+/package.json
+/pnpm-lock.yaml
+/tsconfig.json
+/vite.config.ts
+/src/
+/.figma/design-context/

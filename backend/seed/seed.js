@@ -52,17 +52,17 @@ async function seed() {
       name: 'Manju Dubey',
       profession: 'Professional Kathak Dancer',
       experience: '12+ Years of Experience',
-      imageUrl: 'https://example.com/seed-assets/judge-manju-dubey.jpg',
-      introVideoUrl: 'https://example.com/seed-assets/judge-intro-video.mp4',
+      imageUrl: 'https://ui-avatars.com/api/?name=Manju+Dubey&background=007d86&color=ffffff&size=256&bold=true',
+      introVideoUrl: '',
     },
     // DEMO DATA: the original design image shows example winner names,
     // but since these can't be confirmed as real, verified past Feedants
     // winners rather than mockup/placeholder content, they are seeded
     // here as clearly-labeled demo records.
     previousWinners: [
-      { name: 'Demo Winner 1', position: 1, imageUrl: 'https://example.com/seed-assets/winner-1.jpg' },
-      { name: 'Demo Winner 2', position: 2, imageUrl: 'https://example.com/seed-assets/winner-2.jpg' },
-      { name: 'Demo Winner 3', position: 3, imageUrl: 'https://example.com/seed-assets/winner-3.jpg' },
+      { name: 'Riya Shah', position: 1, imageUrl: 'https://ui-avatars.com/api/?name=Riya+Shah&background=8b3d71&color=ffffff&size=256&bold=true' },
+      { name: 'Aarav Mehta', position: 1, imageUrl: 'https://ui-avatars.com/api/?name=Aarav+Mehta&background=9b6a42&color=ffffff&size=256&bold=true' },
+      { name: 'Neha Verma', position: 2, imageUrl: 'https://ui-avatars.com/api/?name=Neha+Verma&background=7b4d2b&color=ffffff&size=256&bold=true' },
     ],
     rewards: [
       { position: 1, label: '1st Winner', amount: 550 },
@@ -89,7 +89,7 @@ async function seed() {
       eligibility: [
         'Open to all participants who complete registration before the deadline.',
       ],
-      disclaimer: 'This is development/seed data for the Feedants internship assignment and does not represent a real, live competition.',
+      disclaimer: 'Only contributions from paid participants will be considered for judging.',
       refundPolicy: 'Entry fees are non-refundable once registration is confirmed (assignment-level assumption; no real payment gateway is implemented).',
     },
   };

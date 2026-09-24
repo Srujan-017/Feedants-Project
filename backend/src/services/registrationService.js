@@ -141,7 +141,9 @@ async function registerUserForCompetition(competitionId, userId) {
         {
           _id: competitionId,
           status: 'REGISTRATION_OPEN',
-          registrationDeadline: { $gt: now },
+          // The deadline is inclusive: registration is valid through the
+          // exact deadline instant. A later server time is rejected.
+          registrationDeadline: { $gte: now },
           $expr: { $lt: ['$bookedSpots', '$maxParticipants'] },
         },
         { $inc: { bookedSpots: 1 } },
@@ -161,7 +163,7 @@ async function registerUserForCompetition(competitionId, userId) {
             `Registration is not open for this competition (current status: ${competition.status})`
           );
         }
-        if (competition.registrationDeadline <= now) {
+        if (competition.registrationDeadline < now) {
           throw new ApiError(409, 'Registration deadline has passed');
         }
         if (competition.bookedSpots >= competition.maxParticipants) {
